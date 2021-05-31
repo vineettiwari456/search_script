@@ -1,0 +1,1815 @@
+{
+  "settings": {
+    "number_of_shards": 12,
+    "refresh_interval": "60s",
+    "number_of_replicas": 1,
+    "index.max_result_window": 500000,
+    "similarity": {
+      "scripted_tf": {
+        "type": "scripted",
+        "script": {
+          "source": " return query.boost;"
+        }
+      },
+      "scripted_normalized_tf": {
+        "type": "scripted",
+        "script": {
+          "source": "double norm = 1/Math.sqrt(doc.length); return query.boost * norm;"
+        }
+      }
+    },
+    "analysis": {
+      "analyzer": {
+        "graph_highlight_analyzer": {
+          "tokenizer": "default_tokenizer",
+          "filter": [
+            "lowercase",
+            "stemmer_protection",
+            "light_english_stemmer",
+            "synonym_graph"
+          ]
+        },
+        "default": {
+          "tokenizer": "default_tokenizer",
+          "filter": [
+            "lowercase",
+            "stemmer_protection",
+            "light_english_stemmer",
+            "synonym",
+            "eng_stopwords",
+            "custom_stopwords",
+            "default_delimiter"
+          ]
+        },
+        "wo_syn_analyzer": {
+          "tokenizer": "default_tokenizer",
+          "filter": [
+            "lowercase",
+            "wo_syn_index_delimiter",
+            "stemmer_protection",
+            "light_english_stemmer"
+          ]
+        },
+        "synonyms_analyzer": {
+          "tokenizer": "default_tokenizer",
+          "filter": [
+            "synonym"
+          ]
+        },
+        "cleaner": {
+          "tokenizer": "default_tokenizer",
+          "filter": [
+            "lowercase",
+            "minimal_english_stemmer"
+          ]
+        },
+        "default_search": {
+          "tokenizer": "default_tokenizer",
+          "filter": [
+            "lowercase",
+            "stemmer_protection",
+            "light_english_stemmer",
+            "search_synonym",
+            "eng_stopwords",
+            "custom_stopwords",
+            "default_delimiter"
+          ]
+        }
+      },
+      "tokenizer": {
+        "default_tokenizer": {
+          "type": "pattern",
+          "pattern": " |,|-|;|:|\\(|\\)|\\*|\\?|\\/|\\[|\\]|\\{|\\}|!|&|\"|\\'"
+        }
+      },
+      "filter": {
+        "index_multiplexer": {
+          "type": "multiplexer",
+          "filters": [
+            "lowercase",
+            "synonym",
+            "default_delimiter",
+            "english_stemmer"
+          ]
+        },
+        "search_multiplexer": {
+          "type": "multiplexer",
+          "filters": [
+            "lowercase",
+            "wo_syn_index_delimiter",
+            "english_stemmer",
+            "synonym_graph"
+          ]
+        },
+        "eng_stopwords": {
+          "type": "stop",
+          "stopwords": [
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "but",
+            "by",
+            "for",
+            "if",
+            "into",
+            "is",
+            "no",
+            "not",
+            "of",
+            "on",
+            "or",
+            "such",
+            "that",
+            "the",
+            "their",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "to",
+            "will",
+            "with",
+            "in"
+          ]
+        },
+        "custom_stopwords": {
+          "type": "stop",
+          "stopwords": [
+            "senior",
+            "professional",
+            "specialist",
+            "expert",
+            "sr",
+            "sr.",
+            "skillset"
+          ]
+        },
+        "synonym": {
+          "type": "synonym",
+          "synonyms": "index_synonyms.txt",
+          "lenient": true,
+          "expand": true
+        },
+        "search_synonym": {
+          "type": "synonym_graph",
+          "synonyms": "search_synonyms.txt",
+          "lenient": true,
+          "expand": true
+        },
+        "synonym_graph": {
+          "type": "synonym_graph",
+          "synonyms": "index_synonyms.txt",
+          "lenient": true
+        },
+        "possessive_english_stemmer": {
+          "type": "stemmer",
+          "name": "possessive_english"
+        },
+        "minimal_english_stemmer": {
+          "type": "stemmer",
+          "name": "minimal_english"
+        },
+        "light_english_stemmer": {
+          "type": "stemmer",
+          "name": "minimal_english"
+        },
+        "english_stemmer": {
+          "type": "stemmer",
+          "name": "english"
+        },
+        "stemmer_protection": {
+          "type": "keyword_marker",
+          "keywords": [
+            "cs",
+            "adas",
+            "adfs",
+            "ads",
+            "afcs",
+            "ais",
+            "ams",
+            "aps",
+            "ats",
+            "aws",
+            "bas",
+            "bios",
+            "bis",
+            "bms",
+            "bods",
+            "bos",
+            "brms",
+            "brs",
+            "cacs",
+            "cas",
+            "cbs",
+            "ces",
+            "cis",
+            "cmbs",
+            "cms",
+            "cts",
+            "cws",
+            "dcs",
+            "ddos",
+            "dms",
+            "dns",
+            "dps",
+            "ebs",
+            "ehs",
+            "ems",
+            "fis",
+            "fms",
+            "fos",
+            "fts",
+            "gds",
+            "gis",
+            "gts",
+            "hds",
+            "hgs",
+            "hris",
+            "hrms",
+            "iaas",
+            "ias",
+            "ibms",
+            "ics",
+            "idms",
+            "ids",
+            "ifrs",
+            "iis",
+            "ims",
+            "ios",
+            "ios",
+            "ips",
+            "irs",
+            "isms",
+            "jms",
+            "jts",
+            "las",
+            "lims",
+            "lms",
+            "los",
+            "mds",
+            "mes",
+            "mfs",
+            "mis",
+            "mis",
+            "mps",
+            "mrs",
+            "mts",
+            "mws",
+            "nas",
+            "nfs",
+            "nms",
+            "oats",
+            "ois",
+            "oms",
+            "orpos",
+            "paas",
+            "pdms",
+            "pes",
+            "pms",
+            "pos",
+            "qms",
+            "qos",
+            "rds",
+            "ros",
+            "rpas",
+            "rtos",
+            "saas",
+            "sas",
+            "scs",
+            "sds",
+            "srs",
+            "ssas",
+            "ssis",
+            "ssrs",
+            "tas",
+            "tcs",
+            "tfs",
+            "tms",
+            "tws",
+            "ucs",
+            "uds",
+            "ups",
+            "vas",
+            "vcs",
+            "vms",
+            "vsts",
+            "wcs",
+            "wds",
+            "wins",
+            "wms",
+            "wps",
+            "mes",
+            "fos",
+            "jsps",
+            "wmos",
+            "mbbs",
+            "m.b.b.s",
+            "m.b.b.s.",
+            "itrs",
+            "vue.js",
+            "rdbms",
+            "dbms",
+            "db2",
+            "dynamics365",
+            "d365",
+            "crm4.0",
+            "aws s3",
+            "interface5",
+            "ui5",
+            "pubsub+",
+            "M.S",
+            "gps",
+            "dr",
+            "gp",
+            "articulate 360",
+            "articulate360",
+            "rm",
+            "rms",
+            "wfh",
+            "dhcp",
+            "arp",
+            "vtp",
+            "dependant pass",
+            "dependent pass",
+            "zfs",
+            "k8s",
+            "log4net",
+            "cca",
+            "cce",
+            "cse",
+            "csa",
+            "ccr",
+            "ibm",
+            "j2me",
+            "j2se",
+            "gm",
+            "vp",
+            "avp",
+            "dy",
+            "svp",
+            "agm",
+            "j2ee",
+            "mpcie",
+            "lvm",
+            "linq",
+            "mvvm",
+            "crisc",
+            "bds",
+            "bhms",
+            "bams",
+            "bpt",
+            "tibco",
+            "gwapt",
+            "gmon",
+            "giac",
+            "mcitp",
+            "ibatis",
+            "figma",
+            "lsmw",
+            "idoc",
+            "badi",
+            "bapi",
+            "rexx",
+            "orcad",
+            "tmcm",
+            "ipc",
+            "yii",
+            "x11",
+            "cbo",
+            "db2"
+          ]
+        },
+        "wo_syn_index_delimiter": {
+          "type": "word_delimiter_graph",
+          "generate_number_parts": true,
+          "adjust_offsets": true,
+          "catenate_numbers": false,
+          "preserve_original": true,
+          "split_on_numerics": true,
+          "split_on_case_change": false,
+          "stem_english_possessive": true,
+          "protected_words": [
+            "c++",
+            "c#",
+            ".net",
+            "c#sharp",
+            "ax++",
+            "axx++",
+            "tc++",
+            "notepad++",
+            "mvc++",
+            "vc++",
+            "x++",
+            "visualc++",
+            "visualdsp++",
+            "vsc++",
+            "c#.net",
+            "c#dotnet",
+            "c#net",
+            "c++11",
+            "c++and",
+            "c++core",
+            "c++html",
+            "com+",
+            "g++",
+            "j++",
+            "omnet++",
+            "cobol+",
+            "a+",
+            "a+n+",
+            "vc#",
+            "vc#.net",
+            "c#net",
+            "c#dotnet",
+            "c#asp",
+            "c#4",
+            "c#.net",
+            "b2b",
+            "b2c",
+            "c2c",
+            "q2c",
+            "j2ee",
+            "d3",
+            "r2r",
+            "i2c",
+            "p2p",
+            "o2c",
+            "j2se",
+            "j2me",
+            "canvas2",
+            "d3js",
+            "oracle10g",
+            "d3dotjs",
+            "d2k",
+            "c51",
+            "as400",
+            "cobol400",
+            "win95",
+            "l2l3",
+            "cq5",
+            "daycq5",
+            "p5",
+            "3d",
+            "l1",
+            "l2",
+            "l3",
+            "l4",
+            "l.l.b",
+            "l.l.b.",
+            "m.b.b.s",
+            "m.b.b.s.",
+            "2g",
+            "3g",
+            "4g",
+            "5g",
+            "b.tech",
+            "s4hana",
+            "4hana",
+            "s/4",
+            "s4",
+            "10g",
+            "11g",
+            "11gr2",
+            "win32",
+            "1.x",
+            "2.x",
+            "dream11",
+            "s3",
+            "itf+",
+            "a+",
+            "network+",
+            "security+",
+            "cloud+",
+            "linux+",
+            "server+",
+            "cysa+",
+            "pentest+",
+            "casp+",
+            "ctt+",
+            "cloud essentials+",
+            "project+",
+            "db2"
+          ]
+        },
+        "default_delimiter": {
+          "type": "word_delimiter_graph",
+          "generate_number_parts": false,
+          "adjust_offsets": false,
+          "catenate_numbers": false,
+          "split_on_numerics": true,
+          "split_on_case_change": false,
+          "stem_english_possessive": true,
+          "protected_words": [
+            "c++",
+            "c#",
+            ".net",
+            "c#sharp",
+            "ax++",
+            "axx++",
+            "tc++",
+            "notepad++",
+            "mvc++",
+            "vc++",
+            "x++",
+            "visualc++",
+            "visualdsp++",
+            "vsc++",
+            "c#.net",
+            "c#dotnet",
+            "c#net",
+            "c++11",
+            "c++and",
+            "c++core",
+            "c++html",
+            "com+",
+            "g++",
+            "j++",
+            "omnet++",
+            "cobol+",
+            "a+",
+            "a+n+",
+            "vc#",
+            "vc#.net",
+            "c#net",
+            "c#dotnet",
+            "c#asp",
+            "c#4",
+            "c#.net",
+            "b2b",
+            "b2c",
+            "c2c",
+            "q2c",
+            "j2ee",
+            "d3",
+            "r2r",
+            "i2c",
+            "p2p",
+            "o2c",
+            "j2se",
+            "j2me",
+            "canvas2",
+            "d3js",
+            "oracle10g",
+            "d3dotjs",
+            "d2k",
+            "c51",
+            "as400",
+            "cobol400",
+            "win95",
+            "l2l3",
+            "cq5",
+            "daycq5",
+            "p5",
+            "3d",
+            "l1",
+            "l2",
+            "l3",
+            "l4",
+            "l.l.b",
+            "l.l.b.",
+            "m.b.b.s",
+            "m.b.b.s.",
+            "2g",
+            "3g",
+            "4g",
+            "5g",
+            "b.tech",
+            "s4hana",
+            "4hana",
+            "s/4",
+            "s4",
+            "10g",
+            "11g",
+            "11gr2",
+            "win32",
+            "1.x",
+            "2.x",
+            "dream11",
+            "s3",
+            "itf+",
+            "a+",
+            "network+",
+            "security+",
+            "cloud+",
+            "linux+",
+            "server+",
+            "cysa+",
+            "pentest+",
+            "casp+",
+            "ctt+",
+            "cloud essentials+",
+            "project+",
+            "db2"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "category": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": false,
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "uuid": {
+            "type": "text",
+            "index": false
+          }
+        }
+      },
+      "country": {
+        "properties": {
+          "iso_code": {
+            "type": "text",
+            "index": false,
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "text": {
+            "type": "text",
+            "index": false
+          },
+          "uuid": {
+            "type": "text",
+            "index": false
+          }
+        }
+      },
+      "current_location_work_visa": {
+        "type": "text",
+        "index": false,
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "date": {
+        "type": "date",
+        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+      },
+      "disabilities": {
+        "properties": {
+          "details": {
+            "properties": {
+              "text": {
+                "type": "keyword",
+                "index": true
+              },
+              "uuid": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "sub_type": {
+            "properties": {
+              "text": {
+                "type": "keyword",
+                "index": true
+              },
+              "uuid": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "type": {
+            "properties": {
+              "text": {
+                "type": "keyword",
+                "index": true
+              },
+              "uuid": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          }
+        }
+      },
+      "dob": {
+        "type": "date"
+      },
+      "driving_license": {
+        "type": "text",
+        "index": false,
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "email": {
+        "properties": {
+          "id": {
+            "type": "text",
+            "index": false,
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "is_verified": {
+            "type": "byte"
+          }
+        }
+      },
+      "gender": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": false,
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "uuid": {
+            "type": "text",
+            "index": false
+          }
+        }
+      },
+      "hide_from_employers": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "norms": false
+          },
+          "uuid": {
+            "type": "text",
+            "index": false
+          }
+        }
+      },
+      "has_image": {
+        "type": "byte"
+      },
+      "image_url": {
+        "type": "text",
+        "index": false,
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "is_active": {
+        "type": "byte"
+      },
+      "is_confidential": {
+        "type": "byte"
+      },
+      "is_differently_abled": {
+        "type": "byte"
+      },
+      "kiwi_user_id": {
+        "type": "long"
+      },
+      "last_active_date": {
+        "type": "date"
+      },
+      "last_active_time": {
+        "type": "date"
+      },
+      "marital_status": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": false,
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "uuid": {
+            "type": "text",
+            "index": false
+          }
+        }
+      },
+      "mobile_details": {
+        "properties": {
+          "country_code": {
+            "type": "text",
+            "index": false,
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "is_verified": {
+            "type": "byte"
+          },
+          "number": {
+            "type": "text",
+            "index": false,
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "name": {
+        "type": "text"
+      },
+      "nationality": {
+        "properties": {
+          "iso_code": {
+            "type": "text",
+            "index": false,
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "text": {
+            "type": "text",
+            "index": false
+          },
+          "uuid": {
+            "type": "text",
+            "index": false
+          }
+        }
+      },
+      "profiles": {
+        "type": "nested",
+        "properties": {
+          "name": {
+            "type": "text",
+            "norms": false,
+            "similarity": "scripted_tf"
+          },
+          "channel_id": {
+            "type": "byte"
+          },
+          "email": {
+            "properties": {
+              "id": {
+                "type": "text",
+                "index": false,
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "is_verified": {
+                "type": "byte"
+              }
+            }
+          },
+          "is_confidential": {
+            "type": "byte"
+          },
+          "mobile_details": {
+            "properties": {
+              "country_code": {
+                "type": "text",
+                "index": false,
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "is_verified": {
+                "type": "byte"
+              },
+              "number": {
+                "type": "text",
+                "index": false,
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              }
+            }
+          },
+          "resume_parsed_data": {
+            "properties": {
+              "experience": {
+                "type": "double"
+              },
+              "current_designation": {
+                "type": "text",
+                "norms": false,
+                "similarity": "scripted_tf",
+                "fields": {
+                  "wo_syn": {
+                    "type": "text",
+                    "analyzer": "wo_syn_analyzer",
+                    "index_options": "offsets",
+                    "search_analyzer": "graph_highlight_analyzer",
+                    "norms": false,
+                    "similarity": "scripted_tf"
+                  }
+                }
+              },
+              "skills": {
+                "type": "text",
+                "norms": false,
+                "similarity": "scripted_tf",
+                "fields": {
+                  "wo_syn": {
+                    "type": "text",
+                    "index_options": "offsets",
+                    "analyzer": "wo_syn_analyzer",
+                    "search_analyzer": "graph_highlight_analyzer",
+                    "norms": false,
+                    "similarity": "scripted_tf"
+                  }
+                }
+              },
+              "skills_splitted_unnested": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "norms": false,
+                    "similarity": "scripted_tf",
+                    "fields": {
+                      "wo_syn": {
+                        "type": "text",
+                        "analyzer": "wo_syn_analyzer",
+                        "index_options": "offsets",
+                        "search_analyzer": "graph_highlight_analyzer",
+                        "norms": false,
+                        "similarity": "scripted_tf"
+                      }
+                    }
+                  }
+                }
+              },
+              "skills_splitted": {
+                "type": "nested",
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "norms": false,
+                    "similarity": "scripted_tf",
+                    "fields": {
+                      "wo_syn": {
+                        "type": "text",
+                        "index_options": "offsets",
+                        "analyzer": "wo_syn_analyzer",
+                        "search_analyzer": "graph_highlight_analyzer",
+                        "norms": false,
+                        "similarity": "scripted_tf"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "courses_and_certifications": {
+            "properties": {
+              "issuer": {
+                "type": "text",
+                "index": false
+              },
+              "lifetime_validity": {
+                "type": "byte",
+                "index": false
+              },
+              "name": {
+                "type": "text",
+                "index": false
+              }
+            }
+          },
+          "creation_time": {
+            "type": "date"
+          },
+          "current_employment": {
+            "properties": {
+              "ctc": {
+                "type": "float"
+              },
+              "currency_code": {
+                "type": "keyword",
+                "index": false
+              },
+              "designation": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "norms": false,
+                    "similarity": "scripted_tf",
+                    "fields": {
+                      "wo_syn": {
+                        "type": "text",
+                        "index_options": "offsets",
+                        "analyzer": "wo_syn_analyzer",
+                        "search_analyzer": "graph_highlight_analyzer",
+                        "norms": false,
+                        "similarity": "scripted_tf"
+                      }
+                    }
+                  },
+                  "uuid": {
+                    "type": "text",
+                    "index": false
+                  }
+                }
+              },
+              "employer": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "norms": false,
+                    "similarity": "scripted_tf",
+                    "fields": {
+                      "wo_syn": {
+                        "type": "text",
+                        "index_options": "offsets",
+                        "analyzer": "wo_syn_analyzer",
+                        "search_analyzer": "graph_highlight_analyzer",
+                        "norms": false,
+                        "similarity": "scripted_tf"
+                      }
+                    }
+                  },
+                  "uuid": {
+                    "type": "text",
+                    "index": false
+                  }
+                }
+              },
+              "notice_period": {
+                "type": "long"
+              },
+              "start_date": {
+                "type": "date",
+                "index": false
+              }
+            }
+          },
+          "current_country": {
+            "properties": {
+              "text": {
+                "type": "text",
+                "index": false,
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "uuid": {
+                "type": "text",
+                "index": false
+              }
+            }
+          },
+          "current_location": {
+            "properties": {
+              "text": {
+                "type": "text",
+                "norms": false,
+                "similarity": "scripted_tf",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "uuid": {
+                "type": "text",
+                "index": false
+              }
+            }
+          },
+          "downloaded_by": {
+            "type": "long"
+          },
+          "comments": {
+            "properties": {
+              "comment": {
+                "type": "text",
+                "index": "false"
+              },
+              "comment_date": {
+                "type": "text",
+                "index": "false"
+              },
+              "commented_by": {
+                "type": "long"
+              }
+            }
+          },
+          "educations": {
+            "type": "nested",
+            "properties": {
+              "id": {
+                "type": "long"
+              },
+              "college": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "norms": false,
+                    "similarity": "scripted_tf",
+                    "fields": {
+                      "wo_syn": {
+                        "type": "text",
+                        "index_options": "offsets",
+                        "analyzer": "wo_syn_analyzer",
+                        "search_analyzer": "graph_highlight_analyzer",
+                        "norms": false,
+                        "similarity": "scripted_tf"
+                      }
+                    }
+                  },
+                  "uuid": {
+                    "type": "text",
+                    "index": false
+                  }
+                }
+              },
+              "degree": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "norms": false,
+                    "similarity": "scripted_tf",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      },
+                      "wo_syn": {
+                        "type": "text",
+                        "index_options": "offsets",
+                        "analyzer": "wo_syn_analyzer",
+                        "search_analyzer": "graph_highlight_analyzer",
+                        "norms": false,
+                        "similarity": "scripted_tf"
+                      }
+                    }
+                  },
+                  "uuid": {
+                    "type": "text",
+                    "index": false
+                  }
+                }
+              },
+              "passing_year": {
+                "type": "integer"
+              },
+              "specialization": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "uuid": {
+                    "type": "text",
+                    "index": false
+                  }
+                }
+              }
+            }
+          },
+          "educations_unnested": {
+            "properties": {
+              "id": {
+                "type": "long"
+              },
+              "college": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "norms": false,
+                    "similarity": "scripted_tf",
+                    "fields": {
+                      "wo_syn": {
+                        "type": "text",
+                        "index_options": "offsets",
+                        "analyzer": "wo_syn_analyzer",
+                        "search_analyzer": "graph_highlight_analyzer",
+                        "norms": false,
+                        "similarity": "scripted_tf"
+                      }
+                    }
+                  },
+                  "uuid": {
+                    "type": "text",
+                    "index": false
+                  }
+                }
+              },
+              "degree": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "norms": false,
+                    "similarity": "scripted_tf",
+                    "fields": {
+                      "wo_syn": {
+                        "type": "text",
+                        "index_options": "offsets",
+                        "analyzer": "wo_syn_analyzer",
+                        "search_analyzer": "graph_highlight_analyzer",
+                        "norms": false,
+                        "similarity": "scripted_tf"
+                      },
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "uuid": {
+                    "type": "text",
+                    "index": false
+                  }
+                }
+              },
+              "passing_year": {
+                "type": "integer"
+              },
+              "specialization": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "uuid": {
+                    "type": "text",
+                    "index": false
+                  }
+                }
+              }
+            }
+          },
+          "emailed_by": {
+            "type": "long"
+          },
+          "experience": {
+            "type": "double"
+          },
+          "follows": {
+            "type": "long"
+          },
+          "it_skills": {
+            "properties": {
+              "text": {
+                "type": "text",
+                "norms": false
+              },
+              "uuid": {
+                "type": "text",
+                "index": false
+              }
+            }
+          },
+          "kiwi_profile_id": {
+            "type": "long"
+          },
+          "languages": {
+            "properties": {
+              "text": {
+                "type": "text",
+                "index": false,
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "uuid": {
+                "type": "text",
+                "index": false
+              }
+            }
+          },
+          "preferred_industries": {
+            "properties": {
+              "text": {
+                "type": "text",
+                "norms": false,
+                "similarity": "scripted_tf",
+                "fields": {
+                  "wo_syn": {
+                    "type": "text",
+                    "index_options": "offsets",
+                    "analyzer": "wo_syn_analyzer",
+                    "search_analyzer": "graph_highlight_analyzer",
+                    "norms": false,
+                    "similarity": "scripted_tf"
+                  },
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "uuid": {
+                "type": "text",
+                "index": false
+              }
+            }
+          },
+          "preferred_employment_types": {
+            "properties": {
+              "text": {
+                "type": "text",
+                "index": false,
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "uuid": {
+                "type": "text",
+                "index": false
+              }
+            }
+          },
+          "preferred_job_types": {
+            "properties": {
+              "text": {
+                "type": "text",
+                "index": false,
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "uuid": {
+                "type": "text",
+                "index": false
+              }
+            }
+          },
+          "preferred_countries": {
+            "properties": {
+              "text": {
+                "type": "text",
+                "index": false,
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "uuid": {
+                "type": "text",
+                "index": false
+              }
+            }
+          },
+          "preferred_locations": {
+            "properties": {
+              "text": {
+                "type": "text",
+                "norms": false,
+                "similarity": "scripted_tf",
+                "fields": {
+                  "wo_syn": {
+                    "type": "text",
+                    "index_options": "offsets",
+                    "analyzer": "wo_syn_analyzer",
+                    "search_analyzer": "graph_highlight_analyzer",
+                    "norms": false,
+                    "similarity": "scripted_tf"
+                  },
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "uuid": {
+                "type": "text",
+                "index": false
+              }
+            }
+          },
+          "preferred_roles": {
+            "type": "nested",
+            "properties": {
+              "function": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "fields": {
+                      "wo_syn": {
+                        "type": "text",
+                        "index_options": "offsets",
+                        "analyzer": "wo_syn_analyzer",
+                        "search_analyzer": "graph_highlight_analyzer",
+                        "norms": false,
+                        "similarity": "scripted_tf"
+                      },
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "uuid": {
+                    "type": "text",
+                    "index": false
+                  }
+                }
+              },
+              "roles": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "fields": {
+                      "wo_syn": {
+                        "type": "text",
+                        "index_options": "offsets",
+                        "analyzer": "wo_syn_analyzer",
+                        "search_analyzer": "graph_highlight_analyzer",
+                        "norms": false,
+                        "similarity": "scripted_tf"
+                      },
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "uuid": {
+                    "type": "text",
+                    "index": false
+                  }
+                }
+              }
+            }
+          },
+          "preferred_roles_unnested": {
+            "properties": {
+              "function": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "norms": false,
+                    "similarity": "scripted_tf",
+                    "fields": {
+                      "wo_syn": {
+                        "type": "text",
+                        "index_options": "offsets",
+                        "analyzer": "wo_syn_analyzer",
+                        "search_analyzer": "graph_highlight_analyzer",
+                        "norms": false,
+                        "similarity": "scripted_tf"
+                      }
+                    }
+                  },
+                  "uuid": {
+                    "type": "text",
+                    "index": false
+                  }
+                }
+              },
+              "roles": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "norms": false,
+                    "similarity": "scripted_tf",
+                    "fields": {
+                      "wo_syn": {
+                        "type": "text",
+                        "analyzer": "wo_syn_analyzer",
+                        "index_options": "offsets",
+                        "search_analyzer": "graph_highlight_analyzer",
+                        "norms": false,
+                        "similarity": "scripted_tf"
+                      }
+                    }
+                  },
+                  "uuid": {
+                    "type": "text",
+                    "index": false
+                  }
+                }
+              }
+            }
+          },
+          "previous_employments": {
+            "properties": {
+              "ctc": {
+                "type": "float"
+              },
+              "currency_code": {
+                "type": "keyword",
+                "index": false
+              },
+              "designation": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "norms": false
+                  },
+                  "uuid": {
+                    "type": "text",
+                    "index": false
+                  }
+                }
+              },
+              "employer": {
+                "properties": {
+                  "text": {
+                    "type": "text",
+                    "norms": false,
+                    "similarity": "scripted_tf",
+                    "fields": {
+                      "wo_syn": {
+                        "type": "text",
+                        "analyzer": "wo_syn_analyzer",
+                        "index_options": "offsets",
+                        "search_analyzer": "graph_highlight_analyzer",
+                        "norms": false,
+                        "similarity": "scripted_tf"
+                      }
+                    }
+                  },
+                  "uuid": {
+                    "type": "text",
+                    "index": false
+                  }
+                }
+              },
+              "end_date": {
+                "type": "date",
+                "index": false
+              },
+              "start_date": {
+                "type": "date",
+                "index": false
+              }
+            }
+          },
+          "profile_id": {
+            "type": "long"
+          },
+          "projects": {
+            "properties": {
+              "description": {
+                "type": "text"
+              },
+              "end_date": {
+                "type": "date",
+                "index": false
+              },
+              "start_date": {
+                "type": "date",
+                "index": false
+              },
+              "title": {
+                "type": "text"
+              }
+            }
+          },
+          "has_resume": {
+            "type": "byte"
+          },
+          "resume_file_path": {
+            "type": "text",
+            "index": false,
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "site_contexts_visibility": {
+            "type": "text",
+            "index": false,
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "site_context": {
+            "type": "text",
+            "index": false,
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "skills_unnested": {
+            "properties": {
+              "text": {
+                "type": "text",
+                "norms": false,
+                "similarity": "scripted_tf",
+                "fields": {
+                  "wo_syn": {
+                    "type": "text",
+                    "analyzer": "wo_syn_analyzer",
+                    "index_options": "offsets",
+                    "search_analyzer": "graph_highlight_analyzer",
+                    "norms": false,
+                    "similarity": "scripted_tf"
+                  }
+                }
+              },
+              "uuid": {
+                "type": "text",
+                "index": false
+              }
+            }
+          },
+          "skills": {
+            "type": "nested",
+            "properties": {
+              "text": {
+                "type": "text",
+                "norms": false,
+                "similarity": "scripted_tf",
+                "fields": {
+                  "wo_syn": {
+                    "type": "text",
+                    "index_options": "offsets",
+                    "analyzer": "wo_syn_analyzer",
+                    "search_analyzer": "graph_highlight_analyzer",
+                    "norms": false,
+                    "similarity": "scripted_tf"
+                  }
+                }
+              },
+              "uuid": {
+                "type": "text",
+                "index": false
+              }
+            }
+          },
+          "sms_sent_by": {
+            "type": "long"
+          },
+          "sub_channel_id": {
+            "type": "byte"
+          },
+          "title": {
+            "type": "text",
+            "norms": false,
+            "similarity": "scripted_tf",
+            "fields": {
+              "wo_syn": {
+                "type": "text",
+                "index_options": "offsets",
+                "analyzer": "wo_syn_analyzer",
+                "search_analyzer": "graph_highlight_analyzer",
+                "norms": false,
+                "similarity": "scripted_tf"
+              }
+            }
+          },
+          "update_time": {
+            "type": "date"
+          },
+          "viewed_by": {
+            "type": "long"
+          },
+          "profile_visibility": {
+            "type": "integer"
+          }
+        }
+      },
+      "seeker_services": {
+        "type": "text",
+        "index": false,
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "source": {
+        "type": "text",
+        "index": false,
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "user_id": {
+        "type": "long"
+      },
+      "emailed_by": {
+        "type": "long"
+      },
+      "viewed_by": {
+        "type": "long"
+      },
+      "follows": {
+        "type": "long"
+      },
+      "sms_sent_by": {
+        "type": "long"
+      },
+      "downloaded_by": {
+        "type": "long"
+      },
+      "prs": {
+        "properties": {
+          "iso_code": {
+            "type": "text",
+            "index": false,
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "text": {
+            "type": "text",
+            "index": false
+          },
+          "uuid": {
+            "type": "text",
+            "index": false,
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "work_auth": {
+        "properties": {
+          "country": {
+            "properties": {
+              "iso_code": {
+                "type": "text",
+                "index": false,
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "text": {
+                "type": "text",
+                "index": false
+              },
+              "uuid": {
+                "type": "text",
+                "index": false
+              }
+            }
+          },
+          "visa_type": {
+            "properties": {
+              "text": {
+                "type": "text",
+                "index": false,
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                }
+              },
+              "uuid": {
+                "type": "text",
+                "index": false
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

@@ -1,0 +1,12 @@
+it & non it recruiter, non it & it recruiter, it & non it recruitment, non it & it recruitment => itrecruiter, nonitrecruiter, itrecruitment, nonitrecruitment
+it recruitment, it recruiter => itrecruiter, itrecruitment
+non it recruitment, non it recruiter => nonitrecruiter, nonitrecruitment
+java script => javascript
+sales force => salesforce
+marketing manager => marketingmanager
+administration manager, admin manager => adminmanager
+tele sales executive => telesales executive
+tele marketing executive => telemarketing executive
+auto mobile => automobile
+branch head => branch head, branchmgrhead
+c b, c&b, candb, c and b, c & b, c &b, c& b => compensation and benefits, compensation benefits, payroll and benefits, payroll benefits
